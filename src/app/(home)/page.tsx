@@ -32,7 +32,13 @@ export default async function Home() {
           </div>
         </div>
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
+          <TableCaption>
+            {data.length < 1 ? (
+              <p>No Clients Registered at the moment.</p>
+            ) : (
+              <p>A list of your recents clients.</p>
+            )}
+          </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Actions</TableHead>
