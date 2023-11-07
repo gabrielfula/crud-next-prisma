@@ -17,7 +17,7 @@ export default function Header() {
       </div>
       <div className="flex gap-8">
         <Button className="uppercase gap-2 font-bold">
-          <PlusCircle size={17} />
+          <PlusCircle size={15} />
           create user
         </Button>
         <div className="bg-zinc-100 flex items-center rounded px-5 py-1">
