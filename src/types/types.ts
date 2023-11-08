@@ -4,5 +4,5 @@ export type DataClientType = {
   status: boolean;
   place: string;
   cpf: string;
-  createdAt: Date;
+  createdAt: string;
 };

@@ -1,4 +1,5 @@
 import Client from "@/components/client";
+import CreateUser from "@/components/create";
 
 import Header from "@/components/header";
 import {
@@ -9,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import prisma from "@/lib/prisma";
-import { PlusCircle, Download } from "lucide-react";
 
 export default async function Home() {
   const data = await prisma.client.findMany({});
@@ -19,13 +19,8 @@ export default async function Home() {
       <Header />
       <div className="m-20">
         <div className="flex justify-between items-center">
-          <div className="flex gap-10">
-            <p className="flex gap-2 text-xs items-center text-blue-500 uppercase font-bold">
-              Create Form <PlusCircle size={20} />
-            </p>
-            <p className="flex gap-2 text-xs items-center text-blue-500 uppercase font-bold">
-              Download <Download size={20} />
-            </p>
+          <div className="flex gap-10 items-center ">
+            <CreateUser />
           </div>
           <div>
             <h2 className="uppercase text-blue-700 font-bold">Dashboard</h2>
@@ -57,7 +52,7 @@ export default async function Home() {
                 status={item.status}
                 place={item.place}
                 cpf={item.cpf}
-                createdAt={item.createdAt}
+                createdAt={item.createdAt.toISOString()}
               />
             );
           })}
