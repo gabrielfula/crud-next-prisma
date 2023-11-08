@@ -26,7 +26,7 @@ export default async function Client({
           </TableCell>
           <TableCell>{place}</TableCell>
           <TableCell>{cpf}</TableCell>
-          <TableCell className="text-right">11-11-23</TableCell>
+          <TableCell className="text-right">{createdAt}</TableCell>
         </TableRow>
       </TableBody>
     </>
