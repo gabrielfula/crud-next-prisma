@@ -1,8 +1,9 @@
-export type DataClientType = {
+export type ClientesProps = {
   id?: string;
   name: string;
-  status: boolean;
   place: string;
   cpf: string;
-  createdAt: string;
+  status?: boolean;
+  createdAt?: string;
+  updatedAt?: Date;
 };
