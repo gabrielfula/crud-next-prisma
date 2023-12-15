@@ -20,14 +20,12 @@ export default function CreateUser() {
   const [place, setPlace] = useState("");
   const [cpf, setCpf] = useState("");
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    await fetch("http://localhost:3000/api/create", {
+  const handleSubmit = async () => {
+    await fetch("/api/client/", {
       method: "POST",
       body: JSON.stringify({ name, place, cpf }),
-      headers: { "Content-Type": "application/json" },
     });
+    // console.log(name, place, cpf);
   };
 
   return (
@@ -40,7 +38,7 @@ export default function CreateUser() {
             </p>
           </button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[[425px]">
           <DialogHeader>
             <DialogTitle>Create Client</DialogTitle>
             <DialogDescription>
@@ -86,7 +84,7 @@ export default function CreateUser() {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" onClick={handleSubmit}>
+            <Button type="submit" onClick={() => handleSubmit()}>
               Save Client
             </Button>
           </DialogFooter>
