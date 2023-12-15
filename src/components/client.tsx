@@ -1,5 +1,5 @@
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { DataClientType } from "@/types/types";
+import { ClientesProps } from "@/types/types";
 import { Eye, Pen, Trash } from "lucide-react";
 
 export default async function Client({
@@ -8,7 +8,8 @@ export default async function Client({
   place,
   cpf,
   createdAt,
-}: DataClientType) {
+}: ClientesProps) {
+
   return (
     <>
       <TableBody>
