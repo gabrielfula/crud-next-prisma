@@ -1,6 +1,6 @@
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { ClientesProps } from "@/types/types";
-import { Eye, Pen, Trash } from "lucide-react";
+import Edit from "./edit";
 
 export default async function Client({
   name,
@@ -8,18 +8,14 @@ export default async function Client({
   place,
   cpf,
   createdAt,
+  id,
 }: ClientesProps) {
-
   return (
     <>
       <TableBody>
         <TableRow>
           <TableCell className="font-medium">
-            <div className="flex gap-2 mr-4">
-              <Eye strokeWidth={1} color="#6b9cff" />
-              <Pen size={20} color="#6b9cff" strokeWidth={1} />
-              <Trash size={20} color="#6b9cff" strokeWidth={1} />
-            </div>
+            <Edit id={id}/>
           </TableCell>
           <TableCell>{name}</TableCell>
           <TableCell>
