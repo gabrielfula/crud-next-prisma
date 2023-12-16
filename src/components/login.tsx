@@ -1,5 +1,4 @@
 import { signIn, useSession, signOut } from "next-auth/react";
-import { Button } from "./ui/button";
 import { LogIn, LogOut } from "lucide-react";
 
 export default function Login() {

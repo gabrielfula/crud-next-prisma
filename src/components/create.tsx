@@ -25,7 +25,6 @@ export default function CreateUser() {
       method: "POST",
       body: JSON.stringify({ name, place, cpf }),
     });
-    // console.log(name, place, cpf);
   };
 
   return (
