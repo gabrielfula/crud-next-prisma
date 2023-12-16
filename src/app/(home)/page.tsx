@@ -46,7 +46,7 @@ export default async function Home() {
           {data.map((item) => {
             return (
               <Client
-                key={item.id}
+                id={item.id}
                 name={item.name}
                 status={item.status}
                 place={item.place}
