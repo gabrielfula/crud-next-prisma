@@ -26,3 +26,17 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ client });
 }
+
+export async function DELETE(request: Request) {
+  const body = await request.json();
+
+  const { id } = body;
+
+  const client = await prisma.client.delete({
+    where: {
+      id,
+    },
+  });
+
+  return NextResponse.json({ message: "Client delete succes !" });
+}
