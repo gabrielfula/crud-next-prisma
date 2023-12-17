@@ -14,7 +14,7 @@ model Client {
   id        String   @id @default(uuid())
   name      String
   place     String
-  cpf       String   @unique @db.VarChar(11)
+  cpf       String   @unique
   status    Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
