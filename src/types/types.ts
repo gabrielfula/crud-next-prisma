@@ -4,6 +4,6 @@ export type ClientesProps = {
   place: string;
   cpf: string;
   status?: boolean;
-  createdAt?: string;
+  createdAt?: Date;
   updatedAt?: Date;
 };
