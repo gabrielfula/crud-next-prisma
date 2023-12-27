@@ -1,11 +1,11 @@
 "use client";
 
-import { Download, PlusCircle } from "lucide-react";
-import React, { FormEvent, useState } from "react";
+import { PlusCircle } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -14,18 +14,52 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+
+type FormType = {
+  name: string;
+  cpf: string;
+  place: string;
+};
+
+const createClientSchema = z.object({
+  name: z.string().nonempty("Nome é obrigatório"),
+  place: z.string().nonempty("Endereço é obrigatório"),
+  cpf: z
+    .string()
+    .nonempty("CPF é obrigatório")
+    .min(11, "O CPF precisa de 11 digítos")
+    .max(11, "Limite de digítos excedido"),
+});
 
 export default function CreateUser() {
-  const [name, setName] = useState("");
-  const [place, setPlace] = useState("");
-  const [cpf, setCpf] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(createClientSchema),
+  });
 
-  const handleSubmit = async () => {
+  const router = useRouter();
+
+  async function newClient(data: FormType) {
+    const client = data;
+
     await fetch("/api/client/", {
       method: "POST",
-      body: JSON.stringify({ name, place, cpf }),
+      body: JSON.stringify({
+        name: client.name,
+        cpf: client.cpf,
+        place: client.place,
+      }),
     });
-  };
+
+    router.refresh();
+  }
 
   return (
     <>
@@ -44,57 +78,71 @@ export default function CreateUser() {
               Make sure you fill in the information in the fields below.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
+          <form action={handleSubmit(newClient)} className="space-y-7">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="name" className="text-left">
                 Name
               </Label>
               <Input
                 id="name"
                 placeholder="Name's Client"
                 className="col-span-3"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                {...register("name")}
               />
+              {errors.name && (
+                <span className="text-red-500 text-sm font-bold">
+                  {errors.name.message}
+                </span>
+              )}
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Place
+
+            <div className="flex flex-col gap-4">
+              <Label htmlFor="username" className="text-left">
+                Address
               </Label>
-              <Input
-                id="place"
-                placeholder="Place of Client"
-                className="col-span-3"
-                value={place}
-                onChange={(event) => setPlace(event.target.value)}
-              />
+              <div className="space-y-2">
+                <Input
+                  id="place"
+                  placeholder="Address of Client"
+                  className="col-span-3"
+                  {...register("place")}
+                />
+
+                {errors.place && (
+                  <span className="flex text-red-500 text-sm font-bold">
+                    {errors.place.message}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="username" className="text-left">
                 CPF
               </Label>
-              <Input
-                id="username"
-                placeholder="Client CPF"
-                className="col-span-3"
-                value={cpf}
-                onChange={(event) => setCpf(event.target.value)}
-              />
+              <div className="space-y-2">
+                <Input
+                  id="username"
+                  placeholder="Client CPF"
+                  className="col-span-3"
+                  maxLength={11}
+                  minLength={11}
+                  {...register("cpf")}
+                />
+                {errors.cpf && (
+                  <span className="text-red-500 text-sm font-bold">
+                    {errors.cpf.message}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit" onClick={() => handleSubmit()}>
-              Save Client
-            </Button>
-          </DialogFooter>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button type="submit">Save Client</Button>
+              </DialogClose>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
-      {/* 
-      <button>
-        <p className="flex gap-2 text-xs items-center text-blue-500 uppercase font-bold">
-          Download <Download size={19} />
-        </p>
-      </button> */}
     </>
   );
 }
