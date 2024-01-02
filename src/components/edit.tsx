@@ -4,7 +4,11 @@ import { ClientesProps } from "@/types/types";
 import { Eye, Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function Edit({ id }: ClientesProps) {
+type EditProps = {
+  id: string,
+};
+
+export default function Edit({ id }: EditProps) {
   const router = useRouter();
 
   const removeUser = async () => {
