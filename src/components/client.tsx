@@ -26,7 +26,7 @@ export default async function Client() {
             <TableHead className="w-[100px]">Actions</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Place</TableHead>
+            <TableHead>Address</TableHead>
             <TableHead>CPF</TableHead>
             <TableHead className="text-right">Date Created</TableHead>
           </TableRow>
