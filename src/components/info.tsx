@@ -3,6 +3,7 @@
 import { ClientesProps } from "@/types/types";
 import Edit from "./edit";
 import { TableBody, TableCell, TableRow } from "./ui/table";
+import { dateFormatter } from "@/utils/format";
 
 export default function InfoClient({
   name,
@@ -10,8 +11,11 @@ export default function InfoClient({
   status,
   place,
   cpf,
+  createdAt,
 }: // createdAt,
 ClientesProps) {
+  const date = dateFormatter(createdAt);
+
   return (
     <>
       <TableBody>
@@ -25,7 +29,7 @@ ClientesProps) {
           </TableCell>
           <TableCell>{place}</TableCell>
           <TableCell>{cpf}</TableCell>
-          <TableCell className="text-right">01/01/2034</TableCell>
+          <TableCell className="text-right">{date}</TableCell>
         </TableRow>
       </TableBody>
     </>
