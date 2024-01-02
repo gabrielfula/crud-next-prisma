@@ -1,31 +1,50 @@
-import { TableBody, TableCell, TableRow } from "@/components/ui/table";
-import { ClientesProps } from "@/types/types";
-import Edit from "./edit";
+import {
+  Table,
+  TableCaption,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import prisma from "@/lib/prisma";
+import InfoClient from "./info";
 
-export default async function Client({
-  name,
-  status,
-  place,
-  cpf,
-  createdAt,
-  id,
-}: ClientesProps) {
+export default async function Client() {
+  const data = await prisma.client.findMany({});
+
   return (
     <>
-      <TableBody>
-        <TableRow>
-          <TableCell className="font-medium">
-            <Edit id={id}/>
-          </TableCell>
-          <TableCell>{name}</TableCell>
-          <TableCell>
-            {status === false ? <p>Pendente</p> : <p>Concluído</p>}
-          </TableCell>
-          <TableCell>{place}</TableCell>
-          <TableCell>{cpf}</TableCell>
-          <TableCell className="text-right">{createdAt}</TableCell>
-        </TableRow>
-      </TableBody>
+      <Table>
+        <TableCaption>
+          {data.length < 1 ? (
+            <p>No Clients Registered at the moment.</p>
+          ) : (
+            <p>A list of your recents clients.</p>
+          )}
+        </TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Actions</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Place</TableHead>
+            <TableHead>CPF</TableHead>
+            <TableHead className="text-right">Date Created</TableHead>
+          </TableRow>
+        </TableHeader>
+        {data.map((item, id) => {
+          return (
+            <InfoClient
+              name={item.name}
+              status={item.status}
+              key={item.id}
+              id={item.id}
+              place={item.place}
+              cpf={item.cpf}
+              createdAt={item.createdAt}
+            />
+          );
+        })}
+      </Table>
     </>
   );
 }
