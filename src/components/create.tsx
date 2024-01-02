@@ -1,14 +1,12 @@
 "use client";
 
-import { PlusCircle } from "lucide-react";
+import { Check, PlusCircle } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -18,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 type FormType = {
   name: string;
@@ -35,35 +35,63 @@ const createClientSchema = z.object({
     .max(11, "Limite de digítos excedido"),
 });
 
+const asyncFunction = async () => {
+  const promise = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Enviado");
+    }, 1000);
+  });
+
+  return promise;
+};
+
 export default function CreateUser() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, reset, formState } = useForm({
+    defaultValues: {
+      name: "",
+      place: "",
+      cpf: "",
+    },
     resolver: zodResolver(createClientSchema),
   });
+
+  let { errors, isSubmitting, isSubmitted } = formState;
+
+  const [visible, setVisible] = useState(isSubmitted);
 
   const router = useRouter();
 
   async function newClient(data: FormType) {
     const client = data;
 
-    await fetch("/api/client/", {
-      method: "POST",
-      body: JSON.stringify({
-        name: client.name,
-        cpf: client.cpf,
-        place: client.place,
-      }),
-    });
+    await asyncFunction();
 
+    try {
+      await fetch("/api/client/", {
+        method: "POST",
+        body: JSON.stringify({
+          name: client.name,
+          cpf: client.cpf,
+          place: client.place,
+        }),
+      });
+      setVisible(false);
+      toast.success("Customer created successfully.");
+    } catch (erro) {
+      toast.error("Customer  was not created.");
+    }
+
+    reset();
     router.refresh();
   }
 
+  const validation = () => {
+    setVisible(true);
+  };
+
   return (
     <>
-      <Dialog>
+      <Dialog onOpenChange={validation} open={visible}>
         <DialogTrigger asChild>
           <button>
             <p className="flex gap-2 text-xs items-center text-blue-500 uppercase font-bold">
@@ -71,6 +99,7 @@ export default function CreateUser() {
             </p>
           </button>
         </DialogTrigger>
+
         <DialogContent className="sm:max-w-[[425px]">
           <DialogHeader>
             <DialogTitle>Create Client</DialogTitle>
@@ -78,7 +107,7 @@ export default function CreateUser() {
               Make sure you fill in the information in the fields below.
             </DialogDescription>
           </DialogHeader>
-          <form action={handleSubmit(newClient)} className="space-y-7">
+          <form onSubmit={handleSubmit(newClient)} className="space-y-7">
             <div className="flex flex-col gap-2">
               <Label htmlFor="name" className="text-left">
                 Name
@@ -135,11 +164,9 @@ export default function CreateUser() {
                 )}
               </div>
             </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button type="submit">Save Client</Button>
-              </DialogClose>
-            </DialogFooter>
+            <Button type="submit" disabled={isSubmitting}>
+              Save Client
+            </Button>
           </form>
         </DialogContent>
       </Dialog>
