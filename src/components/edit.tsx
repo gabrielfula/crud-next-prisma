@@ -2,17 +2,18 @@
 
 import { ClientesProps } from "@/types/types";
 import { Eye, Pen, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function Edit({ id }: any) {
-  const getId = () => {
-    console.log(id);
-  };
+export default function Edit({ id }: ClientesProps) {
+  const router = useRouter();
 
   const removeUser = async () => {
     await fetch("/api/client/", {
       method: "DELETE",
       body: JSON.stringify({ id }),
     });
+
+    router.refresh();
   };
 
   return (
@@ -22,7 +23,7 @@ export default function Edit({ id }: any) {
         size={20}
         color="#6b9cff"
         strokeWidth={1}
-        onClick={getId}
+        // onClick={getId}
         className="cursor-pointer"
       />
       <Trash
