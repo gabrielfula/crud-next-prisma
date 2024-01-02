@@ -1,9 +1,9 @@
 export type ClientesProps = {
-  id?: string;
+  id: string;
   name: string;
   place: string;
   cpf: string;
   status?: boolean;
-  createdAt?: Date;
+  createdAt: Date;
   updatedAt?: Date;
 };
