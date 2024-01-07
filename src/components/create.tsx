@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import {
@@ -13,37 +13,13 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-
-type FormType = {
-  name: string;
-  cpf: string;
-  place: string;
-};
-
-const createClientSchema = z.object({
-  name: z.string().nonempty("Nome é obrigatório"),
-  place: z.string().nonempty("Endereço é obrigatório"),
-  cpf: z
-    .string()
-    .nonempty("CPF é obrigatório")
-    .min(11, "O CPF precisa de 11 digítos")
-    .max(11, "Limite de digítos excedido"),
-});
-
-const asyncFunction = async () => {
-  const promise = new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("Enviado");
-    }, 1000);
-  });
-
-  return promise;
-};
+import { asyncTimeout } from "@/functions/timeout";
+import { createClientSchema } from "@/functions/format";
+import { FormType } from "@/types/types";
 
 export default function CreateUser() {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -64,7 +40,7 @@ export default function CreateUser() {
   async function newClient(data: FormType) {
     const client = data;
 
-    await asyncFunction();
+    await asyncTimeout();
 
     try {
       await fetch("/api/client/", {
@@ -78,7 +54,7 @@ export default function CreateUser() {
       setVisible(false);
       toast.success("Customer created successfully.");
     } catch (erro) {
-      toast.error("Customer  was not created.");
+      toast.error("Customer was not created.");
     }
 
     reset();

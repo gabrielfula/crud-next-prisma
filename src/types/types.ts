@@ -7,3 +7,10 @@ export type ClientesProps = {
   createdAt: Date;
   updatedAt?: Date;
 };
+
+
+export type FormType = {
+  name: string;
+  cpf: string;
+  place: string;
+};
