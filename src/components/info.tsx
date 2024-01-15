@@ -3,7 +3,8 @@
 import { ClientesProps } from "@/types/types";
 import Edit from "./edit";
 import { TableBody, TableCell, TableRow } from "./ui/table";
-import { dateFormatter } from "@/utils/format";
+import { dateFormatter } from "@/functions/format";
+import { maskCpf } from "@/functions/cpf";
 
 export default function InfoClient({
   name,
@@ -12,10 +13,10 @@ export default function InfoClient({
   place,
   cpf,
   createdAt,
-}: // createdAt,
-ClientesProps) {
+}: ClientesProps) {
   const date = dateFormatter(createdAt);
 
+  const cpfFormatted = maskCpf(cpf)
   return (
     <>
       <TableBody>
@@ -25,10 +26,10 @@ ClientesProps) {
           </TableCell>
           <TableCell>{name}</TableCell>
           <TableCell>
-            {status === false ? <p>Pendente</p> : <p>Concluído</p>}
+            {status === false ? <p>Pending</p> : <p>Concluded</p>}
           </TableCell>
           <TableCell>{place}</TableCell>
-          <TableCell>{cpf}</TableCell>
+          <TableCell>{cpfFormatted}</TableCell>
           <TableCell className="text-right">{date}</TableCell>
         </TableRow>
       </TableBody>
