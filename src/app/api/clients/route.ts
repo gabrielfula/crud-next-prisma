@@ -10,17 +10,16 @@ export async function GET() {
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const { name, cpf, place } = body;
-
-  if (!name) {
-    return NextResponse.json({ message: "Name is empty" });
-  }
+  const { name, address, price, cpf, complement } = body;
 
   const client = await prisma.client.create({
     data: {
       name,
       cpf,
-      place,
+      status: false,
+      address,
+      price,
+      complement,
     },
   });
 
