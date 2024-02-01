@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -27,12 +28,6 @@ type CreateClientSchema = z.infer<typeof createClientSchema>;
 export default function CreateUser() {
   const { register, handleSubmit, reset, formState } =
     useForm<CreateClientSchema>({
-      defaultValues: {
-        name: "",
-        address: "",
-        cpf: "",
-        complement: "",
-      },
       resolver: zodResolver(createClientSchema),
     });
 
@@ -67,7 +62,7 @@ export default function CreateUser() {
   }
 
   const validation = () => {
-    setVisible(true);
+    setVisible(!visible);
   };
 
   return (
@@ -171,10 +166,16 @@ export default function CreateUser() {
                 placeholder="Descreva qual serviço foi executado."
               />
             </div>
-
-            <Button type="submit" disabled={isSubmitting}>
-              Salvar Cliente
-            </Button>
+            <div className="flex gap-10">
+              <Button type="submit" disabled={isSubmitting}>
+                Salvar Cliente
+              </Button>
+              <DialogClose asChild>
+                <Button type="button" disabled={isSubmitting}>
+                  Cancelar
+                </Button>
+              </DialogClose>
+            </div>
           </form>
         </DialogContent>
       </Dialog>
