@@ -1,34 +1,44 @@
 "use client";
 
-import { ClientesProps } from "@/types/types";
 import Edit from "./edit";
+import { Client } from "@prisma/client";
 import { TableBody, TableCell, TableRow } from "./ui/table";
-import { dateFormatter } from "@/functions/format";
+import { dateFormatter, priceFormatter } from "@/functions/format";
 import { maskCpf } from "@/functions/cpf";
 
-export default function InfoClient({
-  name,
-  id,
-  status,
-  place,
-  cpf,
-  createdAt,
-}: ClientesProps) {
-  const date = dateFormatter(createdAt);
+interface ClientsItemProps {
+  client: Client;
+}
 
-  const cpfFormatted = maskCpf(cpf)
+export default function InfoClient({ client }: ClientsItemProps) {
+  const date = dateFormatter(client.createdAt);
+
+  const cpfFormatted = maskCpf(client.cpf);
+
+  const priceFormatted = priceFormatter(client.price);
+
   return (
     <>
       <TableBody>
         <TableRow>
           <TableCell className="font-medium">
-            <Edit id={id} />
+            <Edit id={client.id} />
           </TableCell>
-          <TableCell>{name}</TableCell>
+          <TableCell>{client.name}</TableCell>
           <TableCell>
-            {status === false ? <p>Pending</p> : <p>Concluded</p>}
+            {client.status === false ? (
+              <div className="flex gap-3 text-center items-center">
+                <div className="bg-gray-400 h-2 w-2 rounded-full" /> Pendente
+              </div>
+            ) : (
+              <div className="flex gap-3 text-center items-center">
+                <div className="bg-green-400 h-2 w-2 rounded-full" />
+                Concluído
+              </div>
+            )}
           </TableCell>
-          <TableCell>{place}</TableCell>
+          <TableCell>R${priceFormatted}</TableCell>
+          <TableCell>{client.address}</TableCell>
           <TableCell>{cpfFormatted}</TableCell>
           <TableCell className="text-right">{date}</TableCell>
         </TableRow>

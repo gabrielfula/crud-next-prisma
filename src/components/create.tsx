@@ -3,6 +3,7 @@
 import { PlusCircle } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 import {
   Dialog,
   DialogContent,
@@ -14,22 +15,26 @@ import {
 import { Button } from "./ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { asyncTimeout } from "@/functions/timeout";
 import { createClientSchema } from "@/functions/format";
-import { FormType } from "@/types/types";
+
+type CreateClientSchema = z.infer<typeof createClientSchema>;
 
 export default function CreateUser() {
-  const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: {
-      name: "",
-      place: "",
-      cpf: "",
-    },
-    resolver: zodResolver(createClientSchema),
-  });
+  const { register, handleSubmit, reset, formState } =
+    useForm<CreateClientSchema>({
+      defaultValues: {
+        name: "",
+        address: "",
+        cpf: "",
+        complement: "",
+      },
+      resolver: zodResolver(createClientSchema),
+    });
 
   let { errors, isSubmitting, isSubmitted } = formState;
 
@@ -37,24 +42,24 @@ export default function CreateUser() {
 
   const router = useRouter();
 
-  async function newClient(data: FormType) {
-    const client = data;
-
+  async function newClient(client: CreateClientSchema) {
     await asyncTimeout();
 
     try {
-      await fetch("/api/client/", {
+      await fetch("/api/clients/", {
         method: "POST",
         body: JSON.stringify({
           name: client.name,
           cpf: client.cpf,
-          place: client.place,
+          address: client.address,
+          price: client.price,
+          complement: client.complement,
         }),
       });
       setVisible(false);
-      toast.success("Customer created successfully.");
+      toast.success("Cliente criado com sucesso.");
     } catch (erro) {
-      toast.error("Customer was not created.");
+      toast.error("Cliente não foi criado.");
     }
 
     reset();
@@ -71,26 +76,25 @@ export default function CreateUser() {
         <DialogTrigger asChild>
           <button>
             <p className="flex gap-2 text-xs items-center text-blue-500 uppercase font-bold">
-              New Client <PlusCircle size={20} />
+              Novo cliente <PlusCircle size={20} />
             </p>
           </button>
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[[425px]">
           <DialogHeader>
-            <DialogTitle>Create Client</DialogTitle>
+            <DialogTitle>Criar cliente</DialogTitle>
             <DialogDescription>
-              Make sure you fill in the information in the fields below.
+              Certifique-se de que as informações do cliente estejam corretas.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit(newClient)} className="space-y-7">
             <div className="flex flex-col gap-2">
               <Label htmlFor="name" className="text-left">
-                Name
+                Nome
               </Label>
               <Input
-                id="name"
-                placeholder="Name's Client"
+                placeholder="Nome do cliente"
                 className="col-span-3"
                 {...register("name")}
               />
@@ -103,31 +107,30 @@ export default function CreateUser() {
 
             <div className="flex flex-col gap-4">
               <Label htmlFor="username" className="text-left">
-                Address
+                Endereço
               </Label>
               <div className="space-y-2">
                 <Input
-                  id="place"
-                  placeholder="Address of Client"
+                  placeholder="Endereço do cliente"
                   className="col-span-3"
-                  {...register("place")}
+                  {...register("address")}
                 />
 
-                {errors.place && (
+                {errors.address && (
                   <span className="flex text-red-500 text-sm font-bold">
-                    {errors.place.message}
+                    {errors.address.message}
                   </span>
                 )}
               </div>
             </div>
+
             <div className="flex flex-col gap-2">
               <Label htmlFor="username" className="text-left">
                 CPF
               </Label>
               <div className="space-y-2">
                 <Input
-                  id="username"
-                  placeholder="Client CPF"
+                  placeholder="999.999.999-99"
                   className="col-span-3"
                   maxLength={11}
                   minLength={11}
@@ -140,8 +143,37 @@ export default function CreateUser() {
                 )}
               </div>
             </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="username" className="text-left">
+                Preço
+              </Label>
+              <div className="space-y-2">
+                <Input
+                  placeholder="R$00,00"
+                  className="col-span-3"
+                  {...register("price")}
+                />
+                {errors.price && (
+                  <span className="text-red-500 text-sm font-bold">
+                    {errors.price.message}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="username" className="text-left">
+                Serviço prestado
+              </Label>
+              <Textarea
+                {...register("complement")}
+                placeholder="Descreva qual serviço foi executado."
+              />
+            </div>
+
             <Button type="submit" disabled={isSubmitting}>
-              Save Client
+              Salvar Cliente
             </Button>
           </form>
         </DialogContent>
