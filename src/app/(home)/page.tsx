@@ -4,9 +4,9 @@ import CreateUser from "@/components/create";
 export default function Home() {
   return (
     <div>
-      <div className="m-20">
+      <div className="m-16">
         <div className="flex justify-between items-center">
-          <div className="flex gap-10 items-center ">
+          <div className="flex gap-10 items-center">
             <CreateUser />
           </div>
           <div>
