@@ -17,7 +17,7 @@ export default function Edit({ id }: EditProps) {
       body: JSON.stringify({ id }),
     });
 
-    toast.error("User delete with success!");
+    toast.error("Usuário deletado com sucesso!");
 
     router.refresh();
   };
