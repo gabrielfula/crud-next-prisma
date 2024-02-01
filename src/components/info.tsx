@@ -24,7 +24,9 @@ export default function InfoClient({ client }: ClientsItemProps) {
           <TableCell className="font-medium">
             <Edit id={client.id} />
           </TableCell>
-          <TableCell>{client.name}</TableCell>
+          <TableCell className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
+            {client.name}
+          </TableCell>
           <TableCell>
             {client.status === false ? (
               <div className="flex gap-3 text-center items-center">
@@ -38,8 +40,10 @@ export default function InfoClient({ client }: ClientsItemProps) {
             )}
           </TableCell>
           <TableCell>R${priceFormatted}</TableCell>
-          <TableCell>{client.address}</TableCell>
-          <TableCell>{cpfFormatted}</TableCell>
+          <TableCell className="max-w-[200px] whitespace-nowrap overflow-hidden text-ellipsis">
+            {client.address}
+          </TableCell>
+          <TableCell className="w-[250px]">{cpfFormatted}</TableCell>
           <TableCell className="text-right">{date}</TableCell>
         </TableRow>
       </TableBody>
