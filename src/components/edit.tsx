@@ -1,33 +1,33 @@
 "use client";
 
-import { ClientesProps } from "@/types/types";
-import { Eye, Pen, Trash } from "lucide-react";
+import { Pen, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type EditProps = {
-  id: string,
+  id: string;
 };
 
 export default function Edit({ id }: EditProps) {
   const router = useRouter();
 
   const removeUser = async () => {
-    await fetch("/api/client/", {
+    await fetch("/api/clients/", {
       method: "DELETE",
       body: JSON.stringify({ id }),
     });
+
+    toast.error("User delete with success!");
 
     router.refresh();
   };
 
   return (
     <div className="flex gap-2 mr-4">
-      <Eye strokeWidth={1} color="#6b9cff" className="cursor-pointer" />
       <Pen
         size={20}
         color="#6b9cff"
         strokeWidth={1}
-        // onClick={getId}
         className="cursor-pointer"
       />
       <Trash
