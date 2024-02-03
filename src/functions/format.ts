@@ -17,5 +17,6 @@ export const createClientSchema = z.object({
     .min(11, "CPF precisa de 11 digítos")
     .max(11, "Limite de digítos excedido"),
   price: z.coerce.number(),
+  status: z.string().nonempty("Escolha o status de pagamento."),
   complement: z.string().nonempty("Digite a descrição do serviço"),
 });

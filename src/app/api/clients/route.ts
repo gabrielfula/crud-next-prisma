@@ -10,13 +10,15 @@ export async function GET() {
 export async function POST(request: Request) {
   const body = await request.json();
 
-  const { name, address, price, cpf, complement } = body;
+  const { name, address, status, price, cpf, complement } = body;
+
+  const statusVerify = status === "true" ? true : false;
 
   const client = await prisma.client.create({
     data: {
       name,
       cpf,
-      status: false,
+      status: statusVerify,
       address,
       price,
       complement,

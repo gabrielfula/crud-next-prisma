@@ -23,6 +23,16 @@ import { toast } from "sonner";
 import { asyncTimeout } from "@/functions/timeout";
 import { createClientSchema } from "@/functions/format";
 
+// import {
+//   Select,
+//   SelectContent,
+//   SelectGroup,
+//   SelectItem,
+//   SelectLabel,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+
 type CreateClientSchema = z.infer<typeof createClientSchema>;
 
 export default function CreateUser() {
@@ -47,6 +57,7 @@ export default function CreateUser() {
           name: client.name,
           cpf: client.cpf,
           address: client.address,
+          status: client.status,
           price: client.price,
           complement: client.complement,
         }),
@@ -101,7 +112,7 @@ export default function CreateUser() {
             </div>
 
             <div className="flex flex-col gap-4">
-              <Label htmlFor="username" className="text-left">
+              <Label htmlFor="address" className="text-left">
                 Endereço
               </Label>
               <div className="space-y-2">
@@ -120,7 +131,7 @@ export default function CreateUser() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="username" className="text-left">
+              <Label htmlFor="cpf" className="text-left">
                 CPF
               </Label>
               <div className="space-y-2">
@@ -140,7 +151,7 @@ export default function CreateUser() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="username" className="text-left">
+              <Label htmlFor="price" className="text-left">
                 Preço
               </Label>
               <div className="space-y-2">
@@ -158,7 +169,42 @@ export default function CreateUser() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="username" className="text-left">
+              <Label htmlFor="status" className="text-left">
+                Status do pagamento
+              </Label>
+              {/* 
+              <Select {...register("select")}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Pagamento" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Pagamento</SelectLabel>
+                    <SelectItem value="concluded">Concluído</SelectItem>
+                    <SelectItem value="pending">Pendente</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select> */}
+
+              <select
+                className="max-w-[180px] rounded border px-3 py-2 text-zinc-600"
+                {...register("status")}
+              >
+                <option disabled selected>
+                  Pagamento
+                </option>
+                <option value="true">Concluído</option>
+                <option value="false">Pendente</option>
+              </select>
+              {errors.status && (
+                <span className="text-red-500 text-sm font-bold">
+                  {errors.status.message}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="complement" className="text-left">
                 Serviço prestado
               </Label>
               <Textarea
