@@ -4,7 +4,7 @@ CREATE TABLE "clients" (
     "name" TEXT NOT NULL,
     "cpf" VARCHAR(11) NOT NULL,
     "address" TEXT NOT NULL,
-    "price" DECIMAL(65,30) NOT NULL,
+    "price" DECIMAL(10,2) NOT NULL,
     "status" BOOLEAN NOT NULL,
     "complement" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
