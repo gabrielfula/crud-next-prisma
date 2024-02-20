@@ -1,10 +1,11 @@
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 export const dateFormatter = (date: Date, locale = "pt-BR") => {
   return new Intl.DateTimeFormat(locale).format(date);
 };
 
-export const priceFormatter = (price: number, locale = "pt-BR") => {
+export const priceFormatter = (price: any, locale = "pt-BR") => {
   return new Intl.NumberFormat(locale).format(price);
 };
 
